@@ -126,6 +126,33 @@ class LocalEngine(EngineTemplate.EngineTemplate):
                 )
         return arg_tuples
 
+    @staticmethod
+    def set_all_states_to_single_view(X_L_list, X_D_list):
+        """ Hacks all the states into a single view. 
+        Does not update anything in the view state (sufficient statistics) 
+        because crosscat does not use these during initialization.
+        """
+        single_state = False
+        if isinstance(X_L_list, dict):
+            single_state = True
+            X_L_list = [X_L_list]
+            X_D_list = [X_D_list]
+
+        n_cols = len(X_L_list[0]['column_partition']['assignments'])
+        n_rows = len(X_D_list[0][0])
+
+        X_L_list = list(X_L_list)
+        X_D_list = list(X_D_list)
+
+        for i in range(len(X_L_list)):
+            X_L_list[i]['column_partition']['assignments'] = [0]*n_rows
+            X_D_list[i] = [ X_D_list[i][0] ]
+
+        if single_state:
+            return X_L_list[0], X_D_list[0]
+        else: 
+            return tuple(X_L_list), tuple(X_D_list)
+
     def analyze(self, M_c, T, X_L, X_D, kernel_list=(), n_steps=1, c=(), r=(),
                 max_iterations=-1, max_time=-1, do_diagnostics=False,
                 diagnostics_every_N=1,
