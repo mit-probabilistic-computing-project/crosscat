@@ -68,5 +68,5 @@ fi
 
 
 workon $project_name
-cd "$my_dirname"
-bash install_python_packages.sh >virtualenv_setup.out 2>virtualenv_setup.err
+wget https://bootstrap.pypa.io/get-pip.py -O- | python
+pip install -r $requirements_filename
