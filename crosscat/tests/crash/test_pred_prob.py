@@ -36,10 +36,11 @@ and simple_predictive_probability_unobserved from sample_utils.py with various
 constraint Y and query Q patterns does not throw runtime errors.
 
 TODO:
-    Whether simple_predictive_probability performs the 'correct' computation
-    is not addressed by this test. The design choices for what it means to
-    condition on observed/unobserved members is not documented anywhere in
-    the repository and must be reverse engineered from the spaghetti code.
+    Whether simple_predictive_probability performs the 'correct' computation in
+    carefully constructed cases is not addressed by this test. The design
+    choices for what it means to condition on observed/unobserved members is not
+    documented anywhere in the repository and must be reverse engineered from
+    the spaghetti code.
 
     Unfortunatley, there is no one place to figure out how the constraints Y
     are being used in the evaluation of the predictive probability. The most
@@ -62,7 +63,7 @@ TODO:
             - When conditioning on a cell in observed row, do we delete the
                 already observed value?
             - Why can we not condition one unobserved on another unobserved?
-                This behaviior throws a RuntimeError (tested below).
+                This behavior throws a RuntimeError (tested below).
 '''
 
 N_ROWS = 1000
@@ -109,7 +110,7 @@ def simple_predictive_probability_unobserved(seed=0):
 
 
     # XXX TODO: Fix more issues discovered
-    # Thenext  queries are probabilistically sound, but the code demonstrates
+    # The next queries are probabilistically sound, but the code demonstrates
     # bizarre behavior. Determing what to do in all of these special cases is
     # a design problem.
 
