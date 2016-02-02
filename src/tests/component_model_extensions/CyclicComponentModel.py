@@ -348,8 +348,7 @@ class p_CyclicComponentModel(ccm.p_CyclicComponentModel):
         a = interval[0]+mu
         b = interval[1]+mu
 
-        if a < 0.0 or b > 2.*math.pi:
-            pdb.set_trace()
+        assert a >= 0.0 and b <= 2.*math.pi
 
         support_range = b - a;
         support_bin_size = support_range/(nbins-1.0)
