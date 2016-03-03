@@ -18,15 +18,19 @@
 #   limitations under the License.
 #
 import crosscat.utils.general_utils as gu
-
+import numpy
 
 class EngineTemplate(object):
 
     def __init__(self, seed=None):
-        self.seed_generator = gu.int_generator(seed)
+        self.seed(seed)
 
     def get_next_seed(self):
         return self.seed_generator.next()
+
+    def seed(self, prngstate):
+        assert isinstance(prngstate, (int, numpy.random.RandomState))
+        self.seed_generator = gu.int_generator(prngstate)
 
     def initialize(self, M_c, M_r, T, initialization='from_the_prior'):
         M_c, M_r, X_L, X_D = dict(), dict(), dict(), []
@@ -109,4 +113,3 @@ class EngineTemplate(object):
     def predictive_anomalousness(self, M_c, X_L, X_D, T, q, n):
         a = []
         return a
-
