@@ -19,9 +19,16 @@
 #
 from __future__ import print_function
 import multiprocessing
+import multiprocessing.pool
 #
 import crosscat.LocalEngine as LE
 import crosscat.utils.sample_utils as su
+
+
+class Pool(multiprocessing.pool.Pool):
+
+    def __del__(self):
+        self.terminate()
 
 
 class MultiprocessingEngine(LE.LocalEngine):
@@ -40,18 +47,15 @@ class MultiprocessingEngine(LE.LocalEngine):
 
         """
         super(MultiprocessingEngine, self).__init__(seed=seed)
-        self.pool = multiprocessing.Pool(cpu_count)
+        self.pool = Pool(cpu_count)
         self.mapper = self.pool.map
         return
-    
+
     def __enter__(self):
         return self
 
-    def __del__(self):
-        self.pool.terminate()
-
     def __exit__(self, type, value, traceback):
-        self.pool.terminate()
+        pass
 
 
 if __name__ == '__main__':
