@@ -32,22 +32,16 @@ class Pool(multiprocessing.pool.Pool):
 
 
 class MultiprocessingEngine(LE.LocalEngine):
-    """A simple interface to the Cython-wrapped C++ engine
+    """A simple interface to the Cython-wrapped C++ engine"""
 
-    MultiprocessingEngine holds no state other than a seed generator.
-    Methods use resources on the local machine.
-
-    """
-
-    def __init__(self, seed=None, cpu_count=None):
-        """Initialize a MultiprocessingEngine
-
-        This is really just setting the initial seed to be used for
-        initializing CrossCat states.  Seeds are generated sequentially
-
-        """
+    def __init__(self, seed=None, pool=None, cpu_count=None):
         super(MultiprocessingEngine, self).__init__(seed=seed)
-        self.pool = Pool(cpu_count)
+        if cpu_count is None:
+            if pool is None:
+                raise ValueError('Specify a cpu count or a process pool')
+        else:
+            pool = Pool(cpu_count)
+        self.pool = pool
         self.mapper = self.pool.map
         return
 
