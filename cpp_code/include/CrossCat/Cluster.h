@@ -1,5 +1,5 @@
 /*
- *   Copyright (c) 2010-2014, MIT Probabilistic Computing Project
+ *   Copyright (c) 2010-2016, MIT Probabilistic Computing Project
  *
  *   Lead Developers: Dan Lovell and Jay Baxter
  *   Authors: Dan Lovell, Baxter Eaves, Jay Baxter, Vikash Mansinghka
@@ -26,8 +26,8 @@
 #include <vector>
 #include <map>
 #include <set>
-#include <stdio.h>
-#include "assert.h"
+#include <cstdio>
+#include <cassert>
 //
 #include "utils.h"
 #include "constants.h"

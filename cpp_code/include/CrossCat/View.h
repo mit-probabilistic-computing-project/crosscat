@@ -1,5 +1,5 @@
 /*
- *   Copyright (c) 2010-2014, MIT Probabilistic Computing Project
+ *   Copyright (c) 2010-2016, MIT Probabilistic Computing Project
  *
  *   Lead Developers: Dan Lovell and Jay Baxter
  *   Authors: Dan Lovell, Baxter Eaves, Jay Baxter, Vikash Mansinghka
@@ -24,7 +24,7 @@
 #include <string>
 #include <map>
 #include <vector>
-#include <assert.h>
+#include <cassert>
 #include <numeric> // std::accumulate
 //
 #include "RandomNumberGenerator.h"

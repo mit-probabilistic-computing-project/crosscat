@@ -1,5 +1,5 @@
 /*
-*   Copyright (c) 2010-2014, MIT Probabilistic Computing Project
+*   Copyright (c) 2010-2016, MIT Probabilistic Computing Project
 *
 *   Lead Developers: Dan Lovell and Jay Baxter
 *   Authors: Dan Lovell, Baxter Eaves, Jay Baxter, Vikash Mansinghka
@@ -17,7 +17,7 @@
 *   See the License for the specific language governing permissions and
 *   limitations under the License.
 */
-#include <stdlib.h>
+#include <cstdlib>
 #include "Cluster.h"
 
 using namespace std;

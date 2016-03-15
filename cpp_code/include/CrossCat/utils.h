@@ -1,5 +1,5 @@
 /*
- *   Copyright (c) 2010-2014, MIT Probabilistic Computing Project
+ *   Copyright (c) 2010-2016, MIT Probabilistic Computing Project
  *
  *   Lead Developers: Dan Lovell and Jay Baxter
  *   Authors: Dan Lovell, Baxter Eaves, Jay Baxter, Vikash Mansinghka
@@ -29,7 +29,7 @@
 #include <sstream> // stringstream in stringify()
 #include <set>
 #include <map>
-#include <math.h> // isnan, isfinite
+#include <cmath> // isnan, isfinite
 #include <boost/numeric/ublas/matrix.hpp>
 
 typedef std::map<std::string, double> ComponentModelHypers;

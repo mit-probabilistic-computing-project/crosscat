@@ -1,5 +1,5 @@
 /*
-*   Copyright (c) 2010-2014, MIT Probabilistic Computing Project
+*   Copyright (c) 2010-2016, MIT Probabilistic Computing Project
 *
 *   Lead Developers: Dan Lovell and Jay Baxter
 *   Authors: Dan Lovell, Baxter Eaves, Jay Baxter, Vikash Mansinghka
@@ -17,8 +17,10 @@
 *   See the License for the specific language governing permissions and
 *   limitations under the License.
 */
-#include "State.h"
+#include <cassert>
+#include <cmath>
 
+#include "State.h"
 
 using namespace std;
 
@@ -141,7 +143,7 @@ double State::insert_row(const vector<double>& row_data,
 
     if(append_row)
         row_idx = (int) (**views.begin()).cluster_lookup.size();
-    
+
     vector<View*>::const_iterator it;
     double score_delta = 0;
     for(it=views.begin(); it!=views.end(); ++it) {
@@ -155,9 +157,9 @@ double State::insert_row(const vector<double>& row_data,
             // FIXME: row crp to score_delta?
         }else{
             vector<double> data_subset = extract_columns(row_data, global_col_indices);
-            score_delta += v.insert_row(data_subset, matching_row_idx, row_idx);    
+            score_delta += v.insert_row(data_subset, matching_row_idx, row_idx);
         }
-        
+
     }
     return score_delta;
 }
@@ -378,7 +380,7 @@ View& State::get_new_view() {
                                 global_row_indices,
                                 row_crp_alpha_grid, multinomial_alpha_grid, r_grid, nu_grid,
                                 vm_b_grid,
-                                s_grids, mu_grids, 
+                                s_grids, mu_grids,
                                 vm_a_grids, vm_kappa_grids,
                                 draw_rand_i());
     views.push_back(p_new_view);
@@ -435,7 +437,10 @@ double State::get_data_score() const {
 }
 
 double State::get_marginal_logp() const {
-    return column_crp_score + get_data_score();
+    assert(!isnan(column_crp_score));
+    double ds = get_data_score();
+    assert(!isnan(ds));
+    return column_crp_score + ds;
 }
 
 map<string, double> State::get_row_partition_model_hypers_i(
@@ -702,7 +707,7 @@ double State::calc_feature_view_predictive_logp(const vector<double>& col_data,
     data_log_delta = v.calc_column_predictive_logp(col_data, col_datatype,
                      data_global_row_indices,
                      hypers);
-   
+
     bool view_violates_dep = false;
     bool view_violates_ind = false;
     bool dependencies_for_col = (column_dependencies.find(global_col_idx)
@@ -713,7 +718,7 @@ double State::calc_feature_view_predictive_logp(const vector<double>& col_data,
     if (dependencies_for_col or independencies_for_col){
         // Check whether the feature can or cannot belong to this view. If it
         // violates either column_dependencies or column_independencies, then
-        // delta is log(0). 
+        // delta is log(0).
 
         // Get the columns in this view
         vector<int> cols_in_view;
@@ -725,7 +730,7 @@ double State::calc_feature_view_predictive_logp(const vector<double>& col_data,
         if (dependencies_for_col){
             std::set<int>::const_iterator its;
             // make sure that all the dependencies are satisfied
-            map<int, set<int> >::const_iterator deps = column_dependencies.find(global_col_idx); 
+            map<int, set<int> >::const_iterator deps = column_dependencies.find(global_col_idx);
             for (its = deps->second.begin(); its != deps->second.end(); its++){
                 if(find(cols_in_view.begin(), cols_in_view.end(), *its) ==
                         cols_in_view.end()){
@@ -739,7 +744,7 @@ double State::calc_feature_view_predictive_logp(const vector<double>& col_data,
             // be dependent of the column at global_col_idx
             for (size_t i = 0; i < cols_in_view.size(); ++i){
                 int col = cols_in_view[i];
-                map<int, set<int> >::const_iterator inds = column_independencies.find(global_col_idx); 
+                map<int, set<int> >::const_iterator inds = column_independencies.find(global_col_idx);
                 if(inds->second.find(col) != inds->second.end()){
                     view_violates_ind = true;
                 }
