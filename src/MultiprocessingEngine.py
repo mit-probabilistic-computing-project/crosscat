@@ -24,12 +24,10 @@ import multiprocessing.pool
 import crosscat.LocalEngine as LE
 import crosscat.utils.sample_utils as su
 
-
 class Pool(multiprocessing.pool.Pool):
 
     def __del__(self):
         self.terminate()
-
 
 class MultiprocessingEngine(LE.LocalEngine):
     """A simple interface to the Cython-wrapped C++ engine"""
@@ -51,6 +49,13 @@ class MultiprocessingEngine(LE.LocalEngine):
     def __exit__(self, type, value, traceback):
         pass
 
+class MultiprocessingEngineFactoryFromPool(object):
+
+    def __init__(self, pool):
+        self.pool = pool
+
+    def __call__(self, seed=None):
+        return MultiprocessingEngine(pool=self.pool, seed=seed)
 
 if __name__ == '__main__':
     import crosscat.tests.timing_test_utils as ttu
