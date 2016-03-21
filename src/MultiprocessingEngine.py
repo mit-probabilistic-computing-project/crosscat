@@ -37,7 +37,9 @@ class MultiprocessingEngine(LE.LocalEngine):
         if cpu_count is None:
             if pool is None:
                 raise ValueError('Specify a cpu count or a process pool')
+            self.own_pool = False
         else:
+            self.own_pool = True
             pool = Pool(cpu_count)
         self.pool = pool
         self.mapper = self.pool.map
@@ -48,6 +50,10 @@ class MultiprocessingEngine(LE.LocalEngine):
 
     def __exit__(self, type, value, traceback):
         pass
+
+    def __del__(self):
+        if self.own_pool:
+            self.pool.terminate()
 
 class MultiprocessingEngineFactoryFromPool(object):
 
