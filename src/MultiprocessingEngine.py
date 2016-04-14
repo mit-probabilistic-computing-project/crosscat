@@ -19,40 +19,49 @@
 #
 from __future__ import print_function
 import multiprocessing
+import multiprocessing.pool
 #
 import crosscat.LocalEngine as LE
 import crosscat.utils.sample_utils as su
 
+class Pool(multiprocessing.pool.Pool):
+
+    def __del__(self):
+        self.terminate()
 
 class MultiprocessingEngine(LE.LocalEngine):
-    """A simple interface to the Cython-wrapped C++ engine
+    """A simple interface to the Cython-wrapped C++ engine"""
 
-    MultiprocessingEngine holds no state other than a seed generator.
-    Methods use resources on the local machine.
-
-    """
-
-    def __init__(self, seed=None, cpu_count=None):
-        """Initialize a MultiprocessingEngine
-
-        This is really just setting the initial seed to be used for
-        initializing CrossCat states.  Seeds are generated sequentially
-
-        """
+    def __init__(self, seed=None, pool=None, cpu_count=None):
         super(MultiprocessingEngine, self).__init__(seed=seed)
-        self.pool = multiprocessing.Pool(cpu_count)
+        if cpu_count is None:
+            if pool is None:
+                raise ValueError('Specify a cpu count or a process pool')
+            self.own_pool = False
+        else:
+            self.own_pool = True
+            pool = Pool(cpu_count)
+        self.pool = pool
         self.mapper = self.pool.map
         return
-    
+
     def __enter__(self):
         return self
 
-    def __del__(self):
-        self.pool.terminate()
-
     def __exit__(self, type, value, traceback):
-        self.pool.terminate()
+        pass
 
+    def __del__(self):
+        if self.own_pool:
+            self.pool.terminate()
+
+class MultiprocessingEngineFactoryFromPool(object):
+
+    def __init__(self, pool):
+        self.pool = pool
+
+    def __call__(self, seed=None):
+        return MultiprocessingEngine(pool=self.pool, seed=seed)
 
 if __name__ == '__main__':
     import crosscat.utils.data_utils as du
