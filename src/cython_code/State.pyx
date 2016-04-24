@@ -74,8 +74,8 @@ cdef matrix[double]* convert_data_to_cpp(np.ndarray[np.float64_t, ndim=2] data):
                set_double(dereference(dataptr)(i,j), data[i,j])
      return dataptr
 
-cdef extern from "State.h":
-     cdef cppclass State:
+cdef extern from "StateNoGIL.h":
+     cdef cppclass StateNoGIL:
           # mutators
           double insert_row(vector[double] row_data, int matching_row_idx, int
                   row_idx)
@@ -116,7 +116,7 @@ cdef extern from "State.h":
           #
           vector[vector[int]] get_X_D()
           void SaveResult()
-     State *new_State "new State" (matrix[double] &data,
+     StateNoGIL *new_State "new StateNoGIL" (matrix[double] &data,
                                    vector[string] global_col_datatypes,
                                    vector[int] global_col_multinomial_counts,
                                    vector[int] global_row_indices,
@@ -128,7 +128,7 @@ cdef extern from "State.h":
                                    vector[double] S_GRID,
                                    vector[double] MU_GRID,
                                    int N_GRID, int SEED, int CT_KERNEL)
-     State *new_State "new State" (matrix[double] &data,
+     StateNoGIL *new_State "new StateNoGIL" (matrix[double] &data,
                                    vector[string] global_col_datatypes,
                                    vector[int] global_col_multinomial_counts,
                                    vector[int] global_row_indices,
@@ -145,7 +145,7 @@ cdef extern from "State.h":
                                    vector[double] S_GRID,
                                    vector[double] MU_GRID,
                                    int N_GRID, int SEED, int CT_KERNEL)
-     void del_State "delete" (State *s)
+     void del_State "delete" (StateNoGIL *s)
 
 
 def extract_column_types_counts(M_c):
@@ -181,7 +181,7 @@ def get_all_transitions_permuted(seed):
      return which_transitions
 
 cdef class p_State:
-    cdef State *thisptr
+    cdef StateNoGIL *thisptr
     cdef matrix[double] *dataptr
     cdef vector[int] gri
     cdef vector[int] gci
