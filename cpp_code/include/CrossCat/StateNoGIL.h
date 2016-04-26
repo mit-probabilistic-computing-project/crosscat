@@ -92,8 +92,13 @@ class StateNoGIL {
     double draw_rand_i();
     std::string to_string(const std::string& join_str = "\n",
                           bool top_level = false) const;
+    // XXX: These must be initialized in cython. They need to be class-level,
+    // therefore "static", but to be useful they can't be "const".
+    static bool release_GIL;
  private:
     State *state;
+    static void start_thread();
+    static void end_thread();
 };
 
 #endif  // GUARD_stateNoGIL_h
