@@ -211,9 +211,7 @@ State_sources = generate_sources([
 ])
 
 StateNoGIL_pyx_sources = ['State.pyx']
-StateNoGIL_cpp_sources = State_cpp_sources[:]
-StateNoGIL_cpp_sources.remove('State.cpp')
-StateNoGIL_cpp_sources.append('StateNoGIL.cpp')
+StateNoGIL_cpp_sources = State_cpp_sources + ['StateNoGIL.cpp']
 StateNoGIL_sources = generate_sources([
     (pyx_src_dir, StateNoGIL_pyx_sources),
     (cpp_src_dir, StateNoGIL_cpp_sources)
