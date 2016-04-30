@@ -216,7 +216,7 @@ StateNoGIL_cpp_sources.remove('State.cpp')
 StateNoGIL_cpp_sources.append('StateNoGIL.cpp')
 StateNoGIL_sources = generate_sources([
     (pyx_src_dir, StateNoGIL_pyx_sources),
-    (cpp_src_dir, StateNoGIL_pyx_sources)
+    (cpp_src_dir, StateNoGIL_cpp_sources)
 ])
 
 
@@ -252,7 +252,7 @@ CyclicComponentModel_ext = Extension(
 
 StateNoGIL_ext = Extension(
     'crosscat.cython_code.State',
-    extra_compile_args = ["-std=c++11 "],
+    extra_compile_args = [],
     sources=StateNoGIL_sources,
     include_dirs=include_dirs,
     language='c++',
