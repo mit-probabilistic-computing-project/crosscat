@@ -719,6 +719,9 @@ class LocalEngine(EngineTemplate.EngineTemplate):
             return model_assertions[0]
         pass
 
+    def set_GIL_handling(self, release):
+        "Release GIL during crosscat calculations if release is True"
+        State.set_crosscat_GIL_handling(release)
 
 def do_diagnostics_to_func_dict(do_diagnostics):
     diagnostic_func_dict = None

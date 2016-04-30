@@ -92,13 +92,16 @@ class StateNoGIL {
     double draw_rand_i();
     std::string to_string(const std::string& join_str = "\n",
                           bool top_level = false) const;
-    // XXX: These must be initialized in cython. They need to be class-level,
-    // therefore "static", but to be useful they can't be "const".
+    // Flag for whether to release the GIL on a call to a crosscat function.
+    // This must be initialized outside the class definition. It needs to be
+    // class-level, therefore "static", but to be useful it can't be "const".
+    // It's defined in StateNoGIL.cpp. It can't be defined in State.h, because
+    // State.h is included in the separate compilations of
+    // cpp_code/src/State.cpp and the product of State.pyx, and
+    // GUARD_stateNoGIL_h is undefined both times.
     static bool release_GIL;
  private:
     State *state;
-    static void start_thread();
-    static void end_thread();
 };
 
 #endif  // GUARD_stateNoGIL_h

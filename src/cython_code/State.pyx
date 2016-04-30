@@ -146,6 +146,11 @@ cdef extern from "StateNoGIL.h":
                                    vector[double] MU_GRID,
                                    int N_GRID, int SEED, int CT_KERNEL)
      void del_State "delete" (StateNoGIL *s)
+     bool release_GIL
+
+
+cpdef set_crosscat_GIL_handling(bool release):
+    release_GIL = release
 
 
 def extract_column_types_counts(M_c):
@@ -561,7 +566,7 @@ def get_column_component_suffstats_by_global_col_idx(M_c, X_L, col_idx):
      within_view_idx = view_state_i['column_names'].index(col_name)
      column_component_suffstats_i = view_state_i['column_component_suffstats'][within_view_idx]
      return column_component_suffstats_i
-     
+
 def sparsify_X_L(M_c, X_L):
      for col_idx, col_i_metadata in enumerate(M_c['column_metadata']):
           modeltype = col_i_metadata['modeltype']
