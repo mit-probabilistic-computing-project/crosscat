@@ -85,10 +85,8 @@ int StateNoGIL::get_num_views() const {
 double StateNoGIL::insert_row(const vector<double>& row_data,
                               int matching_row_idx,
                               int row_idx) {
-    double rv;
     ReleaseGIL _r = ReleaseGIL(release_GIL);
-    rv = state->insert_row(row_data, matching_row_idx, row_idx);
-    return rv;
+    return state->insert_row(row_data, matching_row_idx, row_idx);
 }
 
 double StateNoGIL::get_column_crp_alpha() const {
@@ -100,78 +98,57 @@ double StateNoGIL::get_column_crp_score() const {
 }
 
 double StateNoGIL::transition_features(const MatrixD &data,
-                                  vector<int> which_features) {
-    double rv;
+                                       vector<int> which_features) {
     ReleaseGIL _r = ReleaseGIL(release_GIL);
-    rv = state->transition_features(data, which_features);
-    return rv;
+    return state->transition_features(data, which_features);
 }
 
 double StateNoGIL::get_data_score() const {
-    double rv;
     ReleaseGIL _r = ReleaseGIL(release_GIL);
-    rv = state->get_data_score();
-    return rv;
+    return state->get_data_score();
 }
 
 double StateNoGIL::get_marginal_logp() const {
-    double rv;
     ReleaseGIL _r = ReleaseGIL(release_GIL);
-    rv = state->get_marginal_logp();
-    return rv;
+    return state->get_marginal_logp();
 }
 
 map<string, double>
     StateNoGIL::get_row_partition_model_hypers_i(int view_idx) const {
-    map<string, double> rv;
     ReleaseGIL _r = ReleaseGIL(release_GIL);
-    rv = state->get_row_partition_model_hypers_i(view_idx);
-    return rv;
+    return state->get_row_partition_model_hypers_i(view_idx);
 }
 
 vector<int>
     StateNoGIL::get_row_partition_model_counts_i(int view_idx) const {
-    vector<int> rv;
     ReleaseGIL _r = ReleaseGIL(release_GIL);
-    rv = state->get_row_partition_model_counts_i(view_idx);
-    return rv;
+    return state->get_row_partition_model_counts_i(view_idx);
 }
 
 vector<vector<map<string, double> > >
-    StateNoGIL::get_column_component_suffstats_i(
-    int view_idx) const {
-    vector<vector<map<string, double> > > rv;
+    StateNoGIL::get_column_component_suffstats_i(int view_idx) const {
     ReleaseGIL _r = ReleaseGIL(release_GIL);
-    rv = state->get_column_component_suffstats_i(view_idx);
-    return rv;
+    return state->get_column_component_suffstats_i(view_idx);
 }
 
 vector<CM_Hypers> StateNoGIL::get_column_hypers() const {
-    vector<CM_Hypers> rv;
     ReleaseGIL _r = ReleaseGIL(release_GIL);
-    rv = state->get_column_hypers();
-    return rv;
+    return state->get_column_hypers();
 }
 
 map<string, double> StateNoGIL::get_column_partition_hypers() const {
-    map<string, double> rv;
     ReleaseGIL _r = ReleaseGIL(release_GIL);
-    rv = state->get_column_partition_hypers();
-    return rv;
+    return state->get_column_partition_hypers();
 }
 
 vector<int> StateNoGIL::get_column_partition_assignments() const {
-    vector<int> rv;
     ReleaseGIL _r = ReleaseGIL(release_GIL);
-    rv = state->get_column_partition_assignments();
-    return rv;
+    return state->get_column_partition_assignments();
 }
 
 vector<int> StateNoGIL::get_column_partition_counts() const {
-    vector<int> rv;
     ReleaseGIL _r = ReleaseGIL(release_GIL);
-    rv = state->get_column_partition_counts();
-    return rv;
+    return state->get_column_partition_counts();
 }
 
 std::map<int, std::set<int> > StateNoGIL::get_column_dependencies() const {
@@ -183,117 +160,85 @@ std::map<int, std::set<int> > StateNoGIL::get_column_independencies() const {
 }
 
 vector<vector<int> > StateNoGIL::get_X_D() const {
-    vector<vector<int> > rv;
     ReleaseGIL _r = ReleaseGIL(release_GIL);
-    rv = state->get_X_D();
-    return rv;
+    return state->get_X_D();
 }
 
 vector<double> StateNoGIL::get_draw(int row_idx, int random_seed) const {
-    vector<double> rv;
     ReleaseGIL _r = ReleaseGIL(release_GIL);
-    rv = state->get_draw(row_idx, random_seed);
-    return rv;
+    return state->get_draw(row_idx, random_seed);
 }
 
 map<int, vector<int> > StateNoGIL::get_column_groups() const {
-    map<int, vector<int> > rv;
     ReleaseGIL _r = ReleaseGIL(release_GIL);
-    rv = state->get_column_groups();
-    return rv;
+    return state->get_column_groups();
 }
 
 double StateNoGIL::transition_view_i(int which_view, const MatrixD& data) {
-    double rv;
     ReleaseGIL _r = ReleaseGIL(release_GIL);
-    rv = state->transition_view_i(which_view, data);
-    return rv;
+    return state->transition_view_i(which_view, data);
 }
 
 double StateNoGIL::transition_views(const MatrixD& data) {
-    double rv;
     ReleaseGIL _r = ReleaseGIL(release_GIL);
-    rv = state->transition_views(data);
-    return rv;
+    return state->transition_views(data);
 }
 
 double StateNoGIL::transition_row_partition_assignments(const MatrixD& data,
                                                    vector<int> which_rows) {
-    double rv;
     ReleaseGIL _r = ReleaseGIL(release_GIL);
-    rv = state->transition_row_partition_assignments(data, which_rows);
-    return rv;
+    return state->transition_row_partition_assignments(data, which_rows);
 }
 
 double StateNoGIL::transition_views_zs(const MatrixD& data) {
-    double rv;
     ReleaseGIL _r = ReleaseGIL(release_GIL);
-    rv = state->transition_views_zs(data);
-    return rv;
+    return state->transition_views_zs(data);
 }
 
 double StateNoGIL::transition_views_row_partition_hyper() {
-    double rv;
     ReleaseGIL _r = ReleaseGIL(release_GIL);
-    rv = state->transition_views_row_partition_hyper();
-    return rv;
+    return state->transition_views_row_partition_hyper();
 }
 
 double StateNoGIL::transition_row_partition_hyperparameters(const vector<int>&
                                                        which_cols) {
-    double rv;
     ReleaseGIL _r = ReleaseGIL(release_GIL);
-    rv = state->transition_row_partition_hyperparameters(which_cols);
-    return rv;
+    return state->transition_row_partition_hyperparameters(which_cols);
 }
 
 double StateNoGIL::transition_column_hyperparameters(vector<int> which_cols) {
-    double rv;
     ReleaseGIL _r = ReleaseGIL(release_GIL);
-    rv = state->transition_column_hyperparameters(which_cols);
-    return rv;
+    return state->transition_column_hyperparameters(which_cols);
 }
 
 double StateNoGIL::transition_views_col_hypers() {
-    double rv;
     ReleaseGIL _r = ReleaseGIL(release_GIL);
-    rv = state->transition_views_col_hypers();
-    return rv;
+    return state->transition_views_col_hypers();
 }
 
 double StateNoGIL::calc_row_predictive_logp(const vector<double>& in_vd) {
-    double rv;
     ReleaseGIL _r = ReleaseGIL(release_GIL);
-    rv = state->calc_row_predictive_logp(in_vd);
-    return rv;
+    return state->calc_row_predictive_logp(in_vd);
 }
 
 double StateNoGIL::transition_column_crp_alpha() {
-    double rv;
     ReleaseGIL _r = ReleaseGIL(release_GIL);
-    rv = state->transition_column_crp_alpha();
-    return rv;
+    return state->transition_column_crp_alpha();
 }
 
 double StateNoGIL::transition(const MatrixD& data) {
-    double rv;
     ReleaseGIL _r = ReleaseGIL(release_GIL);
-    rv = state->transition(data);
-    return rv;
+    return state->transition(data);
 }
 
 double StateNoGIL::draw_rand_u() {
-    double rv;
     ReleaseGIL _r = ReleaseGIL(release_GIL);
-    rv = state->draw_rand_u();
-    return rv;
+    return state->draw_rand_u();
 }
 
 double StateNoGIL::draw_rand_i() {
-    double rv;
     ReleaseGIL _r = ReleaseGIL(release_GIL);
-    rv = state->draw_rand_i();
-    return rv;
+    return state->draw_rand_i();
 }
 
 string StateNoGIL::to_string(const string& join_str, bool top_level) const {
