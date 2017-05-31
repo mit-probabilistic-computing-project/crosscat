@@ -120,7 +120,7 @@ def parallelCCompile(self, sources, output_dir=None, macros=None,
     return objects
 #
 import distutils.ccompiler
-distutils.ccompiler.CCompiler.compile=parallelCCompile
+# distutils.ccompiler.CCompiler.compile=parallelCCompile
 
 def generate_sources(dir_files_tuples):
     sources = []
@@ -210,6 +210,13 @@ State_sources = generate_sources([
     (cpp_src_dir, State_cpp_sources),
 ])
 
+StateNoGIL_pyx_sources = ['State.pyx']
+StateNoGIL_cpp_sources = State_cpp_sources + ['StateNoGIL.cpp']
+StateNoGIL_sources = generate_sources([
+    (pyx_src_dir, StateNoGIL_pyx_sources),
+    (cpp_src_dir, StateNoGIL_cpp_sources)
+])
+
 
 # create exts
 ContinuousComponentModel_ext = Extension(
@@ -233,10 +240,18 @@ CyclicComponentModel_ext = Extension(
     include_dirs=include_dirs,
     language='c++',
 )
-State_ext = Extension(
+#State_ext = Extension(
+#    'crosscat.cython_code.State',
+#    extra_compile_args = [],
+#    sources=State_sources,
+#    include_dirs=include_dirs,
+#    language='c++',
+#)
+
+StateNoGIL_ext = Extension(
     'crosscat.cython_code.State',
     extra_compile_args = [],
-    sources=State_sources,
+    sources=StateNoGIL_sources,
     include_dirs=include_dirs,
     language='c++',
 )
@@ -245,7 +260,8 @@ ext_modules = [
     CyclicComponentModel_ext,
     ContinuousComponentModel_ext,
     MultinomialComponentModel_ext,
-    State_ext,
+    # State_ext,
+    StateNoGIL_ext
 ]
 
 packages = [
