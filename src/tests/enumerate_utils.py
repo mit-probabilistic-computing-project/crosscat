@@ -469,7 +469,7 @@ class Partition(object):
 		for j in range(i-1,-1,-1):
 			self.m[j] = self.m[i]
         
-		self.proceed = True;
+		self.proceed = True
 	    
 
 # returns B_N, the Nth Bell number. Uses the definition as a sum of Striling 
@@ -486,8 +486,8 @@ def Bell(N):
 # Returns the Striling number of the second kind. Math taken from Wikipedia:
 # http://en.wikipedia.org/wiki/Stirling_numbers_of_the_second_kind
 def Stirling2nd(n,k):
-	snk = 0.0;
-	const = (1.0/math.factorial(k));
+	snk = 0.0
+	const = (1.0/math.factorial(k))
 	for j in range(k+1):
 		p1 = math.pow(-1,k-j)
 		p2 = sp.special.binom(k,j)
@@ -527,7 +527,7 @@ def lcrp(prt,alpha):
 # http://www.stats.ox.ac.uk/~teh/research/notes/GaussianInverseGamma.pdf
 def NGML(X,mu,r,nu,s):
 
-	X = np.array(X.flatten(1))
+	X = np.array(X.flatten('F'))
 
 	# constant
 	LOGPI = np.log(math.pi)
@@ -536,15 +536,15 @@ def NGML(X,mu,r,nu,s):
 	xbar = np.mean(X)	
 
 	# update parameters
-	rp  = r + n;
-	nup = nu + n;
-	mup = (r*mu+sum(X))/(r+n);
+	rp  = r + n
+	nup = nu + n
+	mup = (r*mu+sum(X))/(r+n)
 	spr = s + sum(X**2)+r*mu**2-rp*mup**2
 
 	# the log answer
-	lp1 = (-n/2)*LOGPI - (1/2)*np.log(rp)-(nup/2)*np.log(spr)+sp.special.gammaln(nup/2);
-	lp2 = -(1/2)*np.log(r)-(nu/2)*np.log(s)+sp.special.gammaln(nu/2);
-	lp = lp1-lp2;
+	lp1 = (-n/2)*LOGPI - (1/2)*np.log(rp)-(nup/2)*np.log(spr)+sp.special.gammaln(nup/2)
+	lp2 = -(1/2)*np.log(r)-(nu/2)*np.log(s)+sp.special.gammaln(nu/2)
+	lp = lp1-lp2
 
 	if np.isnan(lp):
 		# print "X"

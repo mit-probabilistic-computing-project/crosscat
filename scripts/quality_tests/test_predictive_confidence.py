@@ -8,8 +8,8 @@ import crosscat.tests.synthetic_data_generator as sdg
 
 import crosscat.tests.quality_test_utils as qtu
 
+from matplotlib import pyplot as plt
 import random
-import pylab
 import numpy
 
 from scipy import stats
@@ -113,19 +113,19 @@ def check_predictive_sample_improvement(component_model_type, seed=0, show_plot=
 	KL_err = numpy.std(KL, axis=0)/float(num_samples)**.5
 
 	if show_plot:
-		pylab.subplot(1,2,1)
-		pylab.errorbar(list(range(num_transitions)), X_mean, yerr=X_err)
-		pylab.xlabel('iteration')
-		pylab.ylabel('error across each data point')
-		pylab.title('error of predictive sample over iterations, N=%i' % N)
+		plt.subplot(1,2,1)
+		plt.errorbar(list(range(num_transitions)), X_mean, yerr=X_err)
+		plt.xlabel('iteration')
+		plt.ylabel('error across each data point')
+		plt.title('error of predictive sample over iterations, N=%i' % N)
 
-		pylab.subplot(1,2,2)
-		pylab.errorbar(list(range(num_transitions)), KL_mean, yerr=KL_err)
-		pylab.xlabel('iteration')
-		pylab.ylabel('KL divergence')
-		pylab.title('KL divergence, N=%i' % N)
+		plt.subplot(1,2,2)
+		plt.errorbar(list(range(num_transitions)), KL_mean, yerr=KL_err)
+		plt.xlabel('iteration')
+		plt.ylabel('KL divergence')
+		plt.title('KL divergence, N=%i' % N)
 
-		pylab.show()
+		plt.show()
 
 	# error should decrease over time
 	return X_mean[0] > X_mean[-1] and KL_mean[0] > KL_mean[-1]

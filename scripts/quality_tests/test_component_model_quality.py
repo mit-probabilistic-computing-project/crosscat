@@ -7,10 +7,10 @@ import crosscat.tests.component_model_extensions.MultinomialComponentModel as mc
 import crosscat.tests.component_model_extensions.CyclicComponentModel as cycmext
 
 import matplotlib
+from matplotlib import pyplot as plt
 matplotlib.use('Agg')
 
 import random
-import pylab
 import numpy
 import math
 import six
@@ -144,8 +144,8 @@ def check_one_feature_sampler(component_model_type, show_plot=False):
         S_hist = S_hist/float(numpy.sum(S_hist))
         edges = numpy.array(discrete_support,dtype=float)
     else:
-        T_hist, edges = numpy.histogram(T, bins=min(20,len(discrete_support)), normed=True)
-        S_hist, _ =  numpy.histogram(predictive_samples, bins=edges, normed=True)
+        T_hist, edges = numpy.histogram(T, bins=min(20,len(discrete_support)))
+        S_hist, _ =  numpy.histogram(predictive_samples, bins=edges)
         edges = edges[0:-1]
 
     # Goodness-of-fit-tests
@@ -164,45 +164,45 @@ def check_one_feature_sampler(component_model_type, show_plot=False):
         test_str = "Chi-square"
     
     if show_plot:
-        pylab.clf()
-        pylab.axes([0.1, 0.1, .8, .7])
+        plt.clf()
+        plt.axes([0.1, 0.1, .8, .7])
         # bin widths
         width = (numpy.max(edges)-numpy.min(edges))/len(edges)
-        pylab.bar(edges, T_hist, color='blue', alpha=.5, width=width, label='Original data')
-        pylab.bar(edges, S_hist, color='red', alpha=.5, width=width, label='Predictive samples')
+        plt.bar(edges, T_hist, color='blue', alpha=.5, width=width, label='Original data')
+        plt.bar(edges, S_hist, color='red', alpha=.5, width=width, label='Predictive samples')
 
         # plot actual pdf of support given data params
-        pylab.scatter(discrete_support, 
-            numpy.exp(component_model_type.log_pdf(numpy.array(discrete_support), 
-            model_parameters)), 
-            c="blue", 
-            s=100, 
-            label="true pdf", 
+        plt.scatter(discrete_support,
+            numpy.exp(component_model_type.log_pdf(numpy.array(discrete_support),
+            model_parameters)),
+            c="blue",
+            s=100,
+            label="true pdf",
             alpha=1)
 
-        # pylab.ylim([0,2])
-                
+        # plt.ylim([0,2])
+
         # plot predictive probability of support points
-        pylab.scatter(discrete_support, 
-            numpy.exp(probabilities), 
-            c="red", 
-            s=100, 
-            label="predictive probability", 
+        plt.scatter(discrete_support,
+            numpy.exp(probabilities),
+            c="red",
+            s=100,
+            label="predictive probability",
             alpha=1)
-            
-        pylab.legend()
 
-        ylimits = pylab.gca().get_ylim()
-        pylab.ylim([0,ylimits[1]])
+        plt.legend()
+
+        ylimits = plt.gca().get_ylim()
+        plt.ylim([0,ylimits[1]])
 
         title_string = "%i samples drawn from %s w/ params: \n%s\ninference after %i crosscat transitions\n%s test: p = %f" \
             % (N, component_model_type.cctype, str(get_params_string(model_parameters)), n_transitions, test_str, round(p,4))
 
-        pylab.title(title_string, fontsize=12)
+        plt.title(title_string, fontsize=12)
 
         filename = component_model_type.model_type + "_single.png"
-        pylab.savefig(filename)
-        pylab.close()
+        plt.savefig(filename)
+        plt.close()
 
     return p
 

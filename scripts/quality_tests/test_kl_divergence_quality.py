@@ -1,6 +1,5 @@
 import crosscat.tests.quality_test_utils as qtu
 
-import pylab
 import numpy
 
 from scipy.stats import norm 
@@ -50,17 +49,18 @@ def test_KL_divergence_for_normal_distributions(show_plot=True):
 
 
 	if show_plot:
-		pylab.subplot(1,2,1)
-		pylab.plot(KL_inf, label='est')
-		pylab.plot(KL_ana, label='analytical')
-		pylab.title('estimated KL')
-		pylab.legend()
+		import matplotlib.pyplot as plt
+		plt.subplot(1,2,1)
+		plt.plot(KL_inf, label='est')
+		plt.plot(KL_ana, label='analytical')
+		plt.title('estimated KL')
+		plt.legend()
 
-		pylab.subplot(1,2,2)
-		pylab.plot(KL_diff)
-		pylab.title('KL error')
+		plt.subplot(1,2,2)
+		plt.plot(KL_diff)
+		plt.title('KL error')
 
-		pylab.show()
+		plt.show()
 
 
 	_, p = pearsonr(KL_inf, KL_ana)

@@ -9,7 +9,6 @@ import crosscat.tests.synthetic_data_generator as sdg
 import crosscat.tests.quality_test_utils as qtu
 
 import random
-import pylab
 import numpy
 from scipy import stats
 
@@ -57,7 +56,7 @@ def check_impute_vs_column_average_single(component_model_type, num_clusters, se
 						distargs=distargs[cctype])
 
 	# generte a partition of rows to clusters (evenly-weighted)
-	Z = range(num_clusters)
+	Z = list(range(num_clusters))
 	for z in range(N-num_clusters):
 		Z.append(random.randrange(num_clusters))
 
