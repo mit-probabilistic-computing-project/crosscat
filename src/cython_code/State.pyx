@@ -187,6 +187,13 @@ def get_args_dict(args_list, vars_dict):
     return args_dict
 
 
+def _str_keys_to_bytes(d):
+    if isinstance(d, dict):
+        return {k.encode() if isinstance(k, str) else k:
+                _str_keys_to_bytes(v) for k, v in d.items()}
+    return d
+
+
 transition_name_to_method_name_and_args = dict(
      column_partition_hyperparameter=
         ('transition_column_crp_alpha', []),
@@ -201,7 +208,7 @@ transition_name_to_method_name_and_args = dict(
      )
 
 def get_all_transitions_permuted(seed):
-     which_transitions = transition_name_to_method_name_and_args.keys()
+     which_transitions = list(transition_name_to_method_name_and_args.keys())
      random_state = numpy.random.RandomState(seed)
      which_transitions = random_state.permutation(which_transitions)
      return which_transitions
@@ -216,7 +223,7 @@ cdef class p_State:
     cdef vector[string] column_types
     cdef vector[int] event_counts
     cdef np.ndarray T_array
-    cpdef M_c
+    cdef M_c
 
     def __cinit__(
             self, M_c, T, X_L=None, X_D=None,
@@ -227,6 +234,8 @@ cdef class p_State:
         column_types, event_counts = extract_column_types_counts(M_c)
         global_row_indices = range(len(T))
         global_col_indices = range(len(T[0]))
+        if isinstance(initialization, str):
+            initialization = initialization.encode()
 
         # FIXME: keeping TWO copies of the data here
         self.T_array = numpy.array(T)
@@ -276,7 +285,7 @@ cdef class p_State:
                 self.column_types,
                 self.event_counts,
                 self.gri, self.gci,
-                hypers_m,
+                _str_keys_to_bytes(hypers_m),
                 column_partition,
                 col_ensure_dep,
                 col_ensure_ind,
@@ -459,7 +468,7 @@ cdef class p_State:
                     if (diagnostics_every_N) and \
                             (step_idx % diagnostics_every_N == 0):
                         for diagnostic_name, diagnostic_func in\
-                                six.iteritems(diagnostic_func_dict):
+                                diagnostic_func_dict.items():
                             diagnostic_value = diagnostic_func(self)
                             diagnostics_dict[diagnostic_name].append(
                                 diagnostic_value)
@@ -566,9 +575,13 @@ def floatify_dict_dict(in_dict):
 
 def extract_row_partition_alpha(view_state):
     hypers = view_state['row_partition_model']['hypers']
-    alpha = hypers.get('alpha')
+    # A hack for Python 2 -> 3 conversion, since Python 3 strings are unicode
+    # and std::string is bytes. It would be better to track down all the usages
+    # of 'alpha' in the Python code and replace them with b'alpha' but I
+    # (emilyaf) have not done this yet.
+    alpha = hypers.get(b'alpha', hypers.get('alpha'))
     if alpha is None:
-        log_alpha = hypers['log_alpha']
+        log_alpha = hypers.get(b'log_alpha', hypers.get('log_alpha'))
         alpha = numpy.exp(log_alpha)
     return alpha
 
@@ -583,9 +596,11 @@ def transform_latent_state_to_constructor_args(X_L, X_D):
     hypers_m = floatify_dict_dict(hypers_m)
     column_indicator_list = X_L['column_partition']['assignments']
     column_partition = indicator_list_to_list_of_list(column_indicator_list)
-    column_crp_alpha = X_L['column_partition']['hypers']['alpha']
-    row_partition_v = map(indicator_list_to_list_of_list, X_D)
-    row_crp_alpha_v = map(extract_row_partition_alpha, X_L['view_state'])
+    column_crp_hypers = X_L['column_partition']['hypers']
+    column_crp_alpha = column_crp_hypers.get(
+        'alpha', column_crp_hypers.get(b'alpha'))
+    row_partition_v = list(map(indicator_list_to_list_of_list, X_D))
+    row_crp_alpha_v = list(map(extract_row_partition_alpha, X_L['view_state']))
 
     # Need to convert from dict(string:list) to c_map[int c_set[int].
     if X_L.get('col_ensure', None) is None:

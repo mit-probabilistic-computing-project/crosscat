@@ -20,7 +20,7 @@
 
 # calculated the mutual information of various shapes of data
 import numpy
-import pylab as pl
+from matplotlib import pyplot as plt
 import crosscat.utils.sample_utils as su
 import crosscat.utils.inference_utils as iu
 import crosscat.utils.data_utils as du
@@ -184,18 +184,18 @@ def do_test(which_plot, max_plots, n, burn_in, cc_samples, which_test, correlati
 	SX = sample_data_from_crosscat(M_c, X_Ls, X_Ds, get_next_seed, n)
 
 	if do_plot:
-		pl.subplot(2,max_plots,which_plot)
-		pl.scatter(X[:,0],X[:,1],c='blue',alpha=.5)
-		pl.title("Original data")
-		pl.subplot(2,max_plots,max_plots+which_plot)
-		pl.scatter(SX[:,0],SX[:,1],c='red',alpha=.5)
-		pl.title("Sampled data")
-		pl.show
+		plt.subplot(2,max_plots,which_plot)
+		plt.scatter(X[:,0],X[:,1],c='blue',alpha=.5)
+		plt.title("Original data")
+		plt.subplot(2,max_plots,max_plots+which_plot)
+		plt.scatter(SX[:,0],SX[:,1],c='red',alpha=.5)
+		plt.title("Sampled data")
+		plt.show
 
 	return M_c, X_Ls, X_Ds
 
 def MI_test(n, burn_in, cc_samples, which_test, n_MI_samples=500, correlation=0):
-        get_next_seed = lambda : random.randrange(32000)
+	get_next_seed = lambda : random.randrange(32000)
 	M_c, X_Ls, X_Ds = do_test(0, 0, n, burn_in, cc_samples, "correlated", correlation=correlation, do_plot=False)
 	# query column 0 and 1
 	MI, Linfoot = iu.mutual_information(M_c, X_Ls, X_Ds, [(0,1)],

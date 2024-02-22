@@ -187,12 +187,12 @@ class p_CyclicComponentModel(ccm.p_CyclicComponentModel):
         nprng = numpy.random.RandomState(gen_seed)
 
         hypers = self.get_hypers()
-        a = hypers['a']
-        b = hypers['b']
-        kappa = hypers['kappa']
+        a = hypers[b'a']
+        b = hypers[b'b']
+        kappa = hypers[b'kappa']
 
         mu = nprng.vonmises(b-math.pi, a)+math.pi
-        kappa = hypers['kappa']
+        kappa = hypers[b'kappa']
 
         assert(kappa > 0)
         assert(mu >= 0 and mu <= 2*pi)

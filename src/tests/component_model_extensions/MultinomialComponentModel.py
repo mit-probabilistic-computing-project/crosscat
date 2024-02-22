@@ -43,7 +43,7 @@ def counts_to_data(counts, rng):
 
     assert len(X) == N
 
-    random.shuffle(X, rng.uniform)
+    random.shuffle(X)
     X = numpy.array(X, dtype=float)
 
     return X
@@ -113,7 +113,7 @@ def check_hyperparameters_dict(hyperparameters_dict):
 
 def check_data_vs_k(X,K):
     if type(X) is numpy.ndarray:
-        X = X.flatten(1)
+        X = X.flatten('F')
         X = X.tolist()
     K_data = len(set(X))
     if K_data > K:

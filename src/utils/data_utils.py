@@ -93,7 +93,7 @@ def gen_data(gen_seed, num_clusters,
     n_grid = 11
     mu_grid = numpy.linspace(-max_mean, max_mean, n_grid)
     sigma_grid = 10 ** numpy.linspace(-1, numpy.log10(max_std), n_grid)
-    num_rows_per_cluster = num_rows / num_clusters
+    num_rows_per_cluster = num_rows // num_clusters
     zs = numpy.repeat(range(num_clusters), num_rows_per_cluster)
     #
     random_state = numpy.random.RandomState(gen_seed)
@@ -127,7 +127,7 @@ def gen_factorial_data(gen_seed, num_clusters,
         data_i, zs_i = gen_data(
             gen_seed=gen_seed,
             num_clusters=num_clusters,
-            num_cols=num_cols/num_splits,
+            num_cols=num_cols//num_splits,
             num_rows=num_rows,
             max_mean_per_category=max_mean_per_category,
             max_std=max_std,

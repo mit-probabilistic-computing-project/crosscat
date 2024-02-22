@@ -12,7 +12,7 @@ except ImportError:
 from distutils.extension import Extension
 
 def get_version():
-    with open('VERSION', 'rb') as f:
+    with open('VERSION', 'rt') as f:
         version = f.read().strip()
 
     # Append the Git commit id if this is a development version.
@@ -52,14 +52,14 @@ def get_version():
 
 def write_version_py(path):
     try:
-        with open(path, 'rb') as f:
+        with open(path, 'rt') as f:
             version_old = f.read()
     except IOError:
         version_old = None
     version_new = '__version__ = %r\n' % (full_version,)
     if version_old != version_new:
-        print 'writing %s' % (path,)
-        with open(path, 'wb') as f:
+        print('writing %s' % (path,))
+        with open(path, 'wt') as f:
             f.write(version_new)
 
 pkg_version, full_version = get_version()
